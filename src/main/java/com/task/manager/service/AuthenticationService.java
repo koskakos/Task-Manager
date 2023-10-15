@@ -1,6 +1,7 @@
 package com.task.manager.service;
 
 import com.task.manager.model.User;
+import com.task.manager.model.UserInfo;
 import com.task.manager.model.request.SignInRequest;
 import com.task.manager.model.request.SignUpRequest;
 import com.task.manager.model.response.JwtAuthenticationResponse;
@@ -20,7 +21,8 @@ public class AuthenticationService{
     private final AuthenticationManager authenticationManager;
 
     public JwtAuthenticationResponse signup(SignUpRequest request) {
-        var user = User.builder().firstName(request.getFirstName()).lastName(request.getLastName())
+        var user = User.builder()
+                .userInfo(UserInfo.builder().firstName(request.getFirstName()).lastName(request.getLastName()).build())
                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
                 .build();
         userRepository.save(user);
