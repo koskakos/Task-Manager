@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Task> tasks = new LinkedList<>();
 

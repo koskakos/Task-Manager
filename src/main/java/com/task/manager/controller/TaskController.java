@@ -6,11 +6,15 @@ import com.task.manager.model.User;
 import com.task.manager.model.request.TaskRequest;
 import com.task.manager.repository.TaskRepository;
 import com.task.manager.repository.UserRepository;
+import com.task.manager.service.TaskService;
+import com.task.manager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/task")
@@ -18,30 +22,24 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
 
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final TaskService taskService;
 
     @PutMapping("")
     public ResponseEntity<?> saveTask(@RequestBody TaskRequest taskRequest) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Task task = Task.builder().user(user).taskInfo(TaskInfo.builder()
-                .taskTitle(taskRequest.getTaskTitle())
-                .taskDescription(taskRequest.getTaskDescription())
-                .startDate(taskRequest.getStartDate())
-                .endDate(taskRequest.getEndDate())
-                .build())
-                .build();
-        taskRepository.save(task);
+        Task task = taskService.saveTask(taskRequest, userService.getAuthenticatedUser());
         return ResponseEntity.ok(task);
     }
 
     @GetMapping("")
     public ResponseEntity<?> getTasks() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getAuthenticatedUser();
         return ResponseEntity.ok(user.getTasks());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTasks(@PathVariable Long id) {
-        return ResponseEntity.ok(taskRepository.findById(id).get());
+    public ResponseEntity<?> getTask(@PathVariable Long id) {
+        return ResponseEntity.ok(taskRepository.findById(id).orElseThrow(()
+                -> new NoSuchElementException(String.format("Task with id '%d' not found", id))));
     }
 }

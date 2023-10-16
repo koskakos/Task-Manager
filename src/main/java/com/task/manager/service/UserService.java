@@ -1,6 +1,8 @@
 package com.task.manager.service;
 
+import com.task.manager.model.User;
 import com.task.manager.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,5 +19,9 @@ public class UserService{
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findUserByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

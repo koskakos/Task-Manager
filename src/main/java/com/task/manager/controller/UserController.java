@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.NoSuchElementException;
+
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         var user = userRepository.findUserById(id);
-        if(user.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(userRepository.findUserById(id).get());
+        return ResponseEntity.ok(user.orElseThrow(()
+                -> new NoSuchElementException(String.format("User with id '%d' not found", id))));
     }
 }
