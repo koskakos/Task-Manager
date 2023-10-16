@@ -1,7 +1,9 @@
 package com.task.manager.controller;
 
 import com.task.manager.model.Task;
+import com.task.manager.model.TaskInfo;
 import com.task.manager.model.User;
+import com.task.manager.model.request.TaskRequest;
 import com.task.manager.repository.TaskRepository;
 import com.task.manager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +21,17 @@ public class TaskController {
     private final UserRepository userRepository;
 
     @PutMapping("")
-    public ResponseEntity<?> saveTask() {
+    public ResponseEntity<?> saveTask(@RequestBody TaskRequest taskRequest) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Task task = Task.builder().user(user).build();
+        Task task = Task.builder().user(user).taskInfo(TaskInfo.builder()
+                .taskTitle(taskRequest.getTaskTitle())
+                .taskDescription(taskRequest.getTaskDescription())
+                .startDate(taskRequest.getStartDate())
+                .endDate(taskRequest.getEndDate())
+                .build())
+                .build();
         taskRepository.save(task);
-        return ResponseEntity.ok("saved");
+        return ResponseEntity.ok(task);
     }
 
     @GetMapping("")
