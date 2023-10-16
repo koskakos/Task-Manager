@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,14 +26,19 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
     @JsonIgnore
-    @Column(name = "password", nullable = false)
-    private String password;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Task> tasks;
+
 
     @JsonIgnore
     @Override

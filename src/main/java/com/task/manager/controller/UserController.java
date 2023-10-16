@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,6 +22,6 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         var user = userRepository.findUserById(id);
         if(user.isEmpty()) return ResponseEntity.notFound().build();
-        return new ResponseEntity<>(userRepository.findUserById(id).get(), HttpStatus.OK);
+        return ResponseEntity.ok(userRepository.findUserById(id).get());
     }
 }
