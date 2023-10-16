@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,8 +21,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "Users")
 public class User implements UserDetails {
+
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "email", unique = true, nullable = false)
@@ -30,14 +33,14 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToOne
     @MapsId
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Task> tasks;
+    private List<Task> tasks = new LinkedList<>();
 
 
     @JsonIgnore

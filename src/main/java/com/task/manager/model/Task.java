@@ -16,16 +16,16 @@ import lombok.NoArgsConstructor;
 public class Task {
 
     @Id
-    @Column(name = "task_id", nullable = false)
+    @Column(name = "task_id")
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
+    @JsonIgnore
     private User user;
 
-    @OneToOne
     @MapsId
+    @OneToOne
     @JoinColumn(name = "task_id")
     private TaskInfo taskInfo;
 }

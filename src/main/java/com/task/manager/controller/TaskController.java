@@ -39,4 +39,9 @@ public class TaskController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(user.getTasks());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTasks(@PathVariable Long id) {
+        return ResponseEntity.ok(taskRepository.findById(id).get());
+    }
 }

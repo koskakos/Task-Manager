@@ -20,14 +20,11 @@ public class TaskInfo {
 
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "task_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "taskInfo", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Task task;
+
 
     @Column(name = "task_title")
     private String taskTitle;
@@ -37,11 +34,11 @@ public class TaskInfo {
 
     @JsonFormat(pattern="yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date")
     private Date startDate;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private Date endDate;
 }
