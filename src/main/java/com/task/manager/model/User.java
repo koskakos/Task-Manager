@@ -38,10 +38,12 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Task> tasks = new LinkedList<>();
 
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @JsonIgnore
     @Override
@@ -70,7 +72,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @JsonIgnore

@@ -29,7 +29,7 @@ public class TaskService {
                                 (req) -> TaskPoint.builder().description(req.getPointDescription()).build()
                         ).toList())
                         .build())
-                .build();
+                    .build();
         taskRepository.save(task);
         return task;
     }

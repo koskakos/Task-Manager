@@ -25,6 +25,12 @@ public class TaskController {
     private final UserService userService;
     private final TaskService taskService;
 
+    // post edit task
+    // delete task
+    // delete point
+    // add point
+    // point completion json {"isComplete": false/true}
+    //
     @PutMapping("")
     public ResponseEntity<?> saveTask(@RequestBody TaskRequest taskRequest) {
         Task task = taskService.saveTask(taskRequest, userService.getAuthenticatedUser());
