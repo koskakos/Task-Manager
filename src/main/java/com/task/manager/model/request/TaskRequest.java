@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +21,5 @@ public class TaskRequest {
     private Date startDate;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
+    private List<TaskPointRequest> taskPoints = new LinkedList<>();
 }

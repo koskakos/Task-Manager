@@ -20,12 +20,15 @@ public class AuthenticationService{
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    private final ConfirmationTokenService confirmationTokenService;
+
     public JwtAuthenticationResponse signup(SignUpRequest request) {
         var user = User.builder()
                 .userInfo(UserInfo.builder().firstName(request.getFirstName()).lastName(request.getLastName()).build())
                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
                 .build();
         userRepository.save(user);
+        confirmationTokenService.sendConfirmationToken(user);
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }

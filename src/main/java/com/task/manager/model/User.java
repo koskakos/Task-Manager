@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private String password;
 
     @MapsId
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
@@ -42,6 +42,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Task> tasks = new LinkedList<>();
 
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @JsonIgnore
     @Override
@@ -70,7 +72,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @JsonIgnore
