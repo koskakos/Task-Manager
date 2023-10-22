@@ -19,19 +19,23 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class UserController {
 
-    // update user {firstName, lastName}
-    // getAuthenticatedUserId() {id: }
-    //
-
-    private final UserRepository userRepository;
-
     private final UserService userService;
+    
+    // update user {firstName, lastName}
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserInfo userInfo) {
+        var user = userService.updateUser(userInfo, userService.getAuthenticatedUser());
+        return ResponseEntity.ok(user);
+    }
 
+    // getAuthenticatedUserId() {id: }
+    @GetMapping("/authenticated")
+    public ResponseEntity<?> getAuthenticatedUserId() {
+        return ResponseEntity.ok(userService.getAuthenticatedUser().getId());
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
-        var user = userRepository.findUserById(id);
-        return ResponseEntity.ok(user.orElseThrow(()
-                -> new NoSuchElementException(String.format("User with id '%d' not found", id))));
+        return ResponseEntity.ok(userService.findUserById(id));
     }
 
     @RequestMapping(value = "/confirmemail", method = {RequestMethod.GET, RequestMethod.POST})

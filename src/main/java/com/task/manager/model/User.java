@@ -34,11 +34,11 @@ public class User implements UserDetails {
     private String password;
 
     @MapsId
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Task> tasks = new LinkedList<>();
 
