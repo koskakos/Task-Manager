@@ -1,10 +1,13 @@
 package com.task.manager.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Data
@@ -25,4 +28,8 @@ public class ConfirmationToken {
 
     @Column(name = "token", length = 36)
     private String confirmationToken;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expiration_date")
+    private Date expirationDate;
 }

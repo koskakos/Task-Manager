@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -25,6 +27,7 @@ public class ConfirmationTokenService {
         ConfirmationToken confirmationToken = ConfirmationToken.builder()
                 .user(user)
                 .confirmationToken(UUID.randomUUID().toString())
+                .expirationDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 2))
                 .build();
         confirmationTokenRepository.save(confirmationToken);
         return confirmationToken;
