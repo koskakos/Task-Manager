@@ -21,5 +21,8 @@ public class TaskRequest {
     private Date startDate;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
+    private Byte status;
+    private Byte type;
+
     private List<TaskPointRequest> taskPoints = new LinkedList<>();
 }

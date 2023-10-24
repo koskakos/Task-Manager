@@ -44,6 +44,12 @@ public class TaskInfo {
     @Column(name = "end_date")
     private Date end;
 
+    @Column(name = "status")
+    private Byte status;
+
+    @Column(name = "type")
+    private Byte type;
+
 //    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")

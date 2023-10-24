@@ -30,6 +30,8 @@ public class TaskService {
                         .taskDescription(taskRequest.getTaskDescription())
                         .start(taskRequest.getStartDate())
                         .end(taskRequest.getEndDate())
+                        .status(taskRequest.getStatus())
+                        .type(taskRequest.getType())
                         .points(taskRequest.getTaskPoints().stream().map(
                                 (req) -> TaskPoint.builder().description(req.getPointDescription()).build()
                         ).toList())
