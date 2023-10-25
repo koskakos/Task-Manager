@@ -12,7 +12,6 @@ import com.task.manager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -51,12 +50,6 @@ public class TaskService {
                 -> new NoSuchElementException(String.format("Task point with id '%d' not found", id)));
     }
 
-//    public TaskPoint findPointInTask(Long taskId, Long pointId) {
-//
-//
-//
-//        return task;
-//    }
 
     public Task deleteTask(Long id, User user) {
         Task task = findTaskById(id);

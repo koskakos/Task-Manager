@@ -3,13 +3,10 @@ package com.task.manager.service;
 import com.task.manager.model.ConfirmationToken;
 import com.task.manager.model.User;
 import com.task.manager.repository.ConfirmationTokenRepository;
-import com.task.manager.repository.UserRepository;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
