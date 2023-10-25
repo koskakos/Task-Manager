@@ -18,11 +18,11 @@ public class TaskRequest {
     private String taskTitle;
     private String taskDescription;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date startDate;
+    private Date start;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date endDate;
+    private Date end;
     private Byte status;
     private Byte type;
 
-    private List<TaskPointRequest> taskPoints = new LinkedList<>();
+    private List<TaskPointRequest> points = new LinkedList<>();
 }

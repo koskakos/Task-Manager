@@ -25,7 +25,7 @@ public class TaskPoint {
 //    private TaskInfo taskId;
 
     @Column(name = "point_description", nullable = false)
-    private String description;
+    private String pointDescription;
 
     @Column(name = "point_is_completed")
     private boolean isCompleted;

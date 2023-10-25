@@ -28,12 +28,12 @@ public class TaskService {
         Task task = Task.builder().user(user).taskInfo(TaskInfo.builder()
                         .taskTitle(taskRequest.getTaskTitle())
                         .taskDescription(taskRequest.getTaskDescription())
-                        .start(taskRequest.getStartDate())
-                        .end(taskRequest.getEndDate())
+                        .start(taskRequest.getStart())
+                        .end(taskRequest.getEnd())
                         .status(taskRequest.getStatus())
                         .type(taskRequest.getType())
-                        .points(taskRequest.getTaskPoints().stream().map(
-                                (req) -> TaskPoint.builder().description(req.getPointDescription()).build()
+                        .points(taskRequest.getPoints().stream().map(
+                                (req) -> TaskPoint.builder().pointDescription(req.getPointDescription()).build()
                         ).toList())
                         .build())
                     .build();
@@ -85,7 +85,7 @@ public class TaskService {
         Task task = findTaskById(id);
         if(haveAccessToTask(task, user)) {
             task.getTaskInfo().getPoints().add(TaskPoint.builder()
-                    .description(taskPointRequest.getPointDescription())
+                    .pointDescription(taskPointRequest.getPointDescription())
                     .build());
             taskRepository.save(task);
             return task;
