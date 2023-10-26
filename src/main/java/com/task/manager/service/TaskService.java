@@ -25,7 +25,7 @@ public class TaskService {
 
     public Task saveTask(TaskRequest taskRequest, User user) {
         Task task = Task.builder().user(user).taskInfo(TaskInfo.builder()
-                        .taskTitle(taskRequest.getTaskTitle())
+                        .title(taskRequest.getTitle())
                         .taskDescription(taskRequest.getTaskDescription())
                         .start(taskRequest.getStart())
                         .end(taskRequest.getEnd())

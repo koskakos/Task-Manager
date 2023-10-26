@@ -29,7 +29,7 @@ public class TaskInfo {
 
 
     @Column(name = "task_title")
-    private String taskTitle;
+    private String title;
 
     @Column(name = "task_description")
     private String taskDescription;

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskRequest {
-    private String taskTitle;
+    private String title;
     private String taskDescription;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date start;
