@@ -17,10 +17,12 @@ public class UserService{
     private final UserRepository userRepository;
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final ConfirmationTokenService confirmationTokenService;
 
-    public UserService(UserRepository userRepository, ConfirmationTokenRepository confirmationTokenRepository) {
+    public UserService(UserRepository userRepository, ConfirmationTokenRepository confirmationTokenRepository, ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
         this.confirmationTokenRepository = confirmationTokenRepository;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
     public UserDetailsService userDetailsService() {
@@ -48,8 +50,19 @@ public class UserService{
         return ResponseEntity.ok("email successfully verified");
     }
 
+    public User saveUser(User user) {
+        userRepository.save(user);
+        confirmationTokenService.sendConfirmationToken(user);
+        return user;
+    }
+
     public User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException(String.format("User with id '%d' not found", id)));
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).orElseThrow(()
+                -> new NoSuchElementException(String.format("User with email '%d' not found", email)));
     }
 }

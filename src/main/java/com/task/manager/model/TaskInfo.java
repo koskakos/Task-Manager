@@ -29,7 +29,7 @@ public class TaskInfo {
 
 
     @Column(name = "task_title")
-    private String taskTitle;
+    private String title;
 
     @Column(name = "task_description")
     private String taskDescription;
@@ -43,6 +43,12 @@ public class TaskInfo {
     @Temporal(TemporalType.DATE)
     @Column(name = "end_date")
     private Date end;
+
+    @Column(name = "status")
+    private Byte status;
+
+    @Column(name = "type")
+    private Byte type;
 
 //    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

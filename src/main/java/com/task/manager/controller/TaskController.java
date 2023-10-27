@@ -1,21 +1,14 @@
 package com.task.manager.controller;
 
 import com.task.manager.model.Task;
-import com.task.manager.model.TaskInfo;
 import com.task.manager.model.User;
 import com.task.manager.model.request.TaskPointRequest;
 import com.task.manager.model.request.TaskRequest;
-import com.task.manager.repository.TaskRepository;
-import com.task.manager.repository.UserRepository;
 import com.task.manager.service.TaskService;
 import com.task.manager.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/task")

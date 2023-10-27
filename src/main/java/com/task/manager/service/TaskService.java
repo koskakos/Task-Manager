@@ -12,7 +12,6 @@ import com.task.manager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -26,12 +25,14 @@ public class TaskService {
 
     public Task saveTask(TaskRequest taskRequest, User user) {
         Task task = Task.builder().user(user).taskInfo(TaskInfo.builder()
-                        .taskTitle(taskRequest.getTaskTitle())
+                        .title(taskRequest.getTitle())
                         .taskDescription(taskRequest.getTaskDescription())
-                        .start(taskRequest.getStartDate())
-                        .end(taskRequest.getEndDate())
-                        .points(taskRequest.getTaskPoints().stream().map(
-                                (req) -> TaskPoint.builder().description(req.getPointDescription()).build()
+                        .start(taskRequest.getStart())
+                        .end(taskRequest.getEnd())
+                        .status(taskRequest.getStatus())
+                        .type(taskRequest.getType())
+                        .points(taskRequest.getPoints().stream().map(
+                                (req) -> TaskPoint.builder().pointDescription(req.getPointDescription()).build()
                         ).toList())
                         .build())
                     .build();
@@ -49,12 +50,6 @@ public class TaskService {
                 -> new NoSuchElementException(String.format("Task point with id '%d' not found", id)));
     }
 
-//    public TaskPoint findPointInTask(Long taskId, Long pointId) {
-//
-//
-//
-//        return task;
-//    }
 
     public Task deleteTask(Long id, User user) {
         Task task = findTaskById(id);
@@ -83,7 +78,7 @@ public class TaskService {
         Task task = findTaskById(id);
         if(haveAccessToTask(task, user)) {
             task.getTaskInfo().getPoints().add(TaskPoint.builder()
-                    .description(taskPointRequest.getPointDescription())
+                    .pointDescription(taskPointRequest.getPointDescription())
                     .build());
             taskRepository.save(task);
             return task;

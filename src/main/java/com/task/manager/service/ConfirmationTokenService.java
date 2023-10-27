@@ -3,12 +3,11 @@ package com.task.manager.service;
 import com.task.manager.model.ConfirmationToken;
 import com.task.manager.model.User;
 import com.task.manager.repository.ConfirmationTokenRepository;
-import com.task.manager.repository.UserRepository;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -25,6 +24,7 @@ public class ConfirmationTokenService {
         ConfirmationToken confirmationToken = ConfirmationToken.builder()
                 .user(user)
                 .confirmationToken(UUID.randomUUID().toString())
+                .expirationDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 2))
                 .build();
         confirmationTokenRepository.save(confirmationToken);
         return confirmationToken;

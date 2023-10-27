@@ -1,6 +1,5 @@
 package com.task.manager.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +13,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Confirmation_token")
-public class ConfirmationToken {
-
+@Table(name = "Refresh_token")
+public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,10 +24,6 @@ public class ConfirmationToken {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "token", length = 36)
-    private String confirmationToken;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "expiration_date")
-    private Date expirationDate;
+    @Column(name = "refresh_token")
+    private String refreshToken;
 }

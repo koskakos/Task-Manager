@@ -15,11 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskRequest {
-    private String taskTitle;
+    private String title;
     private String taskDescription;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date startDate;
+    private Date start;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date endDate;
-    private List<TaskPointRequest> taskPoints = new LinkedList<>();
+    private Date end;
+    private Byte status;
+    private Byte type;
+
+    private List<TaskPointRequest> points = new LinkedList<>();
 }

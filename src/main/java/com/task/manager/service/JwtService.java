@@ -1,11 +1,15 @@
 package com.task.manager.service;
 
 import java.security.Key;
+import java.sql.Ref;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.task.manager.model.RefreshToken;
+import com.task.manager.repository.RefreshTokenRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,16 +21,28 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
     @Value("${token.signing.key}")
     private String jwtSigningKey;
+
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserService userService;
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateAccessToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails, 1000 * 60 * 10);
+    }
+
+    public RefreshToken generateRefreshToken(UserDetails userDetails) {
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user(userService.findUserByEmail(userDetails.getUsername()))
+                .refreshToken(generateToken(new HashMap<>(), userDetails, 1000 * 60 * 60 * 24 * 14)).build();
+        refreshTokenRepository.save(refreshToken);
+        return refreshToken;
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -39,10 +55,10 @@ public class JwtService {
         return claimsResolvers.apply(claims);
     }
 
-    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, int lifeTimeInMs) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + lifeTimeInMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
