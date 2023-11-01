@@ -4,16 +4,19 @@ import com.task.manager.model.User;
 import com.task.manager.model.UserInfo;
 import com.task.manager.repository.ConfirmationTokenRepository;
 import com.task.manager.repository.UserRepository;
+import org.hibernate.NonUniqueObjectException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.naming.NameAlreadyBoundException;
 import java.util.NoSuchElementException;
 
 @Service
-public class UserService{
+public class UserService {
     private final UserRepository userRepository;
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
@@ -44,13 +47,15 @@ public class UserService{
     public ResponseEntity<?> confirmEmail(String token) {
         var confirmationToken = confirmationTokenRepository.findConfirmationTokenByConfirmationToken(token);
         User user = confirmationToken.orElseThrow().getUser();
-        if(user.isEnabled()) return ResponseEntity.ok("email already verified");
+        if (user.isEnabled()) return ResponseEntity.ok("email already verified");
         user.setEnabled(true);
         userRepository.save(user);
         return ResponseEntity.ok("email successfully verified");
     }
 
     public User saveUser(User user) {
+        if(userRepository.existsByEmail(user.getEmail()))
+            throw new NonUniqueObjectException("", null, user.getEmail());
         userRepository.save(user);
         confirmationTokenService.sendConfirmationToken(user);
         return user;
