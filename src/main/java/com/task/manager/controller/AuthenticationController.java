@@ -4,6 +4,10 @@ import com.task.manager.model.request.SignInRequest;
 import com.task.manager.model.request.SignUpRequest;
 import com.task.manager.model.response.JwtAuthenticationResponse;
 import com.task.manager.service.AuthenticationService;
+import com.task.manager.service.CookieService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,18 +18,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final CookieService cookieService;
     @PostMapping("/signup")
-    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
-        return ResponseEntity.ok(authenticationService.signup(request));
+    public ResponseEntity<JwtAuthenticationResponse> signup(HttpServletResponse response,
+                                                            @RequestBody SignUpRequest request) {
+        JwtAuthenticationResponse jwtAuthenticationResponse = authenticationService.signup(request);
+        cookieService.setAuthenticationCookies(response, jwtAuthenticationResponse);
+        return ResponseEntity.ok(jwtAuthenticationResponse);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request) {
-        return ResponseEntity.ok(authenticationService.signin(request));
+    public ResponseEntity<JwtAuthenticationResponse> signin(HttpServletResponse response,
+                                                            @RequestBody SignInRequest request) {
+        JwtAuthenticationResponse jwtAuthenticationResponse = authenticationService.signin(request);
+        cookieService.setAuthenticationCookies(response, jwtAuthenticationResponse);
+        return ResponseEntity.ok(jwtAuthenticationResponse);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestParam String refreshToken) {
-        return ResponseEntity.ok(authenticationService.refresh(refreshToken));
+    public ResponseEntity<JwtAuthenticationResponse> refresh(HttpServletResponse response,
+                                                             @CookieValue("refreshToken") String refreshToken) {
+        JwtAuthenticationResponse jwtAuthenticationResponse = authenticationService.refresh(refreshToken);
+        cookieService.setAuthenticationCookies(response, jwtAuthenticationResponse);
+        System.out.println(refreshToken);
+        return ResponseEntity.ok(jwtAuthenticationResponse);
     }
 }
