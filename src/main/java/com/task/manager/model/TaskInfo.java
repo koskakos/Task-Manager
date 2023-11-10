@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,12 +39,12 @@ public class TaskInfo {
     @JsonFormat(pattern="yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(name = "start_date")
-    private Date start;
+    private LocalDate start;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(name = "end_date")
-    private Date end;
+    private LocalDate end;
 
     @Column(name = "status")
     private Byte status;

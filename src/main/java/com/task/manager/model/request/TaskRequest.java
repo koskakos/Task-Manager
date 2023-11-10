@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +19,9 @@ public class TaskRequest {
     private String title;
     private String taskDescription;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date start;
+    private LocalDate start;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date end;
+    private LocalDate end;
     private Byte status;
     private Byte type;
 
