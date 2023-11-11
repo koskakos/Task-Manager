@@ -1,6 +1,7 @@
 package com.task.manager.controller;
 
 import com.task.manager.model.response.ApiError;
+import org.hibernate.NonUniqueObjectException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,5 +19,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handleNoSuchElementException(NoSuchElementException ex, WebRequest webRequest) {
         ApiError apiError = new ApiError("Entity not found", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NonUniqueObjectException.class)
+    protected ResponseEntity<?> handleNonUniqueObjectException(NonUniqueObjectException ex, WebRequest webRequest) {
+        ApiError apiError = new ApiError("Email already exists",
+                String.format("User with email '%s' already exists", ex.getEntityName()));
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 }
