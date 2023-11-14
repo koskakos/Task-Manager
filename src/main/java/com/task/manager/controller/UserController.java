@@ -2,6 +2,7 @@ package com.task.manager.controller;
 
 import com.task.manager.model.UserInfo;
 import com.task.manager.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

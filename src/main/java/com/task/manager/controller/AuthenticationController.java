@@ -6,6 +6,7 @@ import com.task.manager.model.response.JwtAuthenticationResponse;
 import com.task.manager.service.AuthenticationService;
 import com.task.manager.service.CookieService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final CookieService cookieService;
+
     @PostMapping("/signup")
     public ResponseEntity<JwtAuthenticationResponse> signup(HttpServletResponse response,
                                                             @RequestBody SignUpRequest request) {
@@ -40,7 +42,7 @@ public class AuthenticationController {
                                                              @CookieValue("refreshToken") String refreshToken) {
         JwtAuthenticationResponse jwtAuthenticationResponse = authenticationService.refresh(refreshToken);
         cookieService.setAuthenticationCookies(response, jwtAuthenticationResponse);
-        System.out.println(refreshToken);
+//        System.out.println(refreshToken);
         return ResponseEntity.ok(jwtAuthenticationResponse);
     }
 }
