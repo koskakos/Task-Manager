@@ -40,6 +40,18 @@ public class TaskService {
         return task;
     }
 
+    public Task updateTask(Task task, User user) {
+        Task oldTask = user.getTasks().stream().filter(t -> t.getId().equals(task.getId())).findFirst().orElse(null);
+        if(oldTask != null) {
+            task.getTaskInfo().setPoints(oldTask.getTaskInfo().getPoints());
+            task.getTaskInfo().setId(task.getId());
+            task.setUser(user);
+            taskRepository.save(task);
+            return task;
+        }
+        return null;
+    }
+
     public Task findTaskById(Long id) {
         return taskRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException(String.format("Task with id '%d' not found", id)));

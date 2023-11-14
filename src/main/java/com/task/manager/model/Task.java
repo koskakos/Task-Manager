@@ -25,7 +25,7 @@ public class Task {
     private User user;
 
     @MapsId
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     private TaskInfo taskInfo;
 }

@@ -38,7 +38,7 @@ public class TaskController {
 
     @PutMapping("/{taskId}/{pointId}")
     public ResponseEntity<?> setPointCompletion(@RequestParam boolean completed,
-                                               @PathVariable Long taskId, @PathVariable Long pointId) {
+                                                @PathVariable Long taskId, @PathVariable Long pointId) {
         return ResponseEntity.ok(taskService.setPointCompletion(taskId, pointId, completed, userService.getAuthenticatedUser()));
     }
 
@@ -48,15 +48,23 @@ public class TaskController {
         return ResponseEntity.ok(task);
     }
 
-
     @GetMapping("")
     public ResponseEntity<?> getTasks() {
         User user = userService.getAuthenticatedUser();
         return ResponseEntity.ok(user.getTasks());
     }
+
+    @PutMapping("")
+    public ResponseEntity<?> updateTask(@RequestBody Task task) {
+        User user = userService.getAuthenticatedUser();
+        return ResponseEntity.ok(taskService.updateTask(task, user));
+    }
+
     // For tests
     @GetMapping("/{id}")
     public ResponseEntity<?> getTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.findTaskById(id));
     }
+
+
 }
