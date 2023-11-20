@@ -28,31 +28,29 @@ public class TaskInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-
-    @Column(name = "task_title")
+    @Column(name = "task_title", nullable = false, length = 25)
     private String title;
 
     @Column(name = "task_description")
     private String taskDescription;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate start;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private LocalDate end;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private Byte status;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private Byte type;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     private List<TaskPoint> points = new LinkedList<>();

@@ -21,8 +21,10 @@ public class UserInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
+    @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
 
 

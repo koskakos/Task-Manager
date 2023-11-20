@@ -24,7 +24,7 @@ public class TaskPoint {
 //    @JoinColumn(name = "task_id")
 //    private TaskInfo taskId;
 
-    @Column(name = "point_description", nullable = false)
+    @Column(name = "point_description", nullable = false, length = 40)
     private String pointDescription;
 
     @Column(name = "point_is_completed")
