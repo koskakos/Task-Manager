@@ -36,7 +36,7 @@ public class ConfirmationTokenService {
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setText("To confirm your account, please click here : "
-                + "https://taskmanager.kz/email/confirmation?token=" + confirmationToken.getConfirmationToken());
+                + "https://taskmanager.kz/email/confirmation/" + confirmationToken.getConfirmationToken());
         emailService.sendEmail(mailMessage);
         return ResponseEntity.ok("confirmation token sent");
     }
