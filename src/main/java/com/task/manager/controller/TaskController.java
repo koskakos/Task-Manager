@@ -1,5 +1,6 @@
 package com.task.manager.controller;
 
+import com.task.manager.config.CachingConfig;
 import com.task.manager.model.Task;
 import com.task.manager.model.User;
 import com.task.manager.model.request.TaskPointRequest;
@@ -7,6 +8,9 @@ import com.task.manager.model.request.TaskRequest;
 import com.task.manager.service.TaskService;
 import com.task.manager.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +22,7 @@ public class TaskController {
     private final TaskService taskService;
 
     // delete task
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.deleteTask(id, userService.getAuthenticatedUser()));
@@ -42,12 +47,14 @@ public class TaskController {
         return ResponseEntity.ok(taskService.setPointCompletion(taskId, pointId, completed, userService.getAuthenticatedUser()));
     }
 
+//    @CachePut(cacheNames = CachingConfig.TASKS, key = "")
     @PostMapping("")
     public ResponseEntity<?> saveTask(@RequestBody TaskRequest taskRequest) {
         Task task = taskService.saveTask(taskRequest, userService.getAuthenticatedUser());
         return ResponseEntity.ok(task);
     }
 
+//    @Cacheable(cacheNames = CachingConfig.TASKS, key = "#id")
     @GetMapping("")
     public ResponseEntity<?> getTasks() {
         User user = userService.getAuthenticatedUser();
@@ -61,6 +68,7 @@ public class TaskController {
     }
 
     // For tests
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.findTaskById(id));

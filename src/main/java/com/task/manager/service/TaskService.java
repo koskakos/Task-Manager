@@ -1,6 +1,7 @@
 package com.task.manager.service;
 
 
+import com.task.manager.config.CachingConfig;
 import com.task.manager.model.Task;
 import com.task.manager.model.TaskInfo;
 import com.task.manager.model.TaskPoint;
@@ -9,6 +10,9 @@ import com.task.manager.model.request.TaskPointRequest;
 import com.task.manager.model.request.TaskRequest;
 import com.task.manager.repository.TaskPointRepository;
 import com.task.manager.repository.TaskRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -40,6 +44,7 @@ public class TaskService {
         return task;
     }
 
+    @CachePut(cacheNames = CachingConfig.TASKS, key = "#task.id")
     public Task updateTask(Task task, User user) {
         Task oldTask = user.getTasks().stream().filter(t -> t.getId().equals(task.getId())).findFirst().orElse(null);
         if(oldTask != null) {
@@ -52,10 +57,13 @@ public class TaskService {
         return null;
     }
 
+
+    @Cacheable(cacheNames = CachingConfig.TASKS, key = "#id")
     public Task findTaskById(Long id) {
         return taskRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException(String.format("Task with id '%d' not found", id)));
     }
+
 
     public TaskPoint findTaskPointById(Long id) {
         return taskPointRepository.findById(id).orElseThrow(()
@@ -63,6 +71,7 @@ public class TaskService {
     }
 
 
+    @CacheEvict(cacheNames = CachingConfig.TASKS, key = "#id")
     public Task deleteTask(Long id, User user) {
         Task task = findTaskById(id);
         if(haveAccessToTask(task, user)) {
